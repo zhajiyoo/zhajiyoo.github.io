@@ -1,4 +1,4 @@
-const username = "YOUR_GITHUB_USERNAME";
+const username = "zhajiyoo";
 
 fetch(`https://api.github.com/users/${username}/repos`)
     .then(response => response.json())
