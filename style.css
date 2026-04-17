@@ -40,12 +40,12 @@ section {
 }
 .avatar {
     width: 120px;
-    border-radius: 50%;
+    border-radius: 60%;
     margin-bottom: 10px;
 }
 footer {
     text-align: center;
     padding: 20px;
-    background: #222;
+    background: #1e3a8a;  /* 深蓝 */
     color: white;
 }
