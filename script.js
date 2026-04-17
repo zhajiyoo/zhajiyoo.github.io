@@ -1,23 +1,36 @@
 const username = "zhajiyoo";
 
 fetch(`https://api.github.com/users/${username}/repos`)
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("GitHub API error");
+        }
+        return response.json();
+    })
     .then(data => {
         const repoList = document.getElementById("repo-list");
 
+        if (data.length === 0) {
+            repoList.innerHTML = "<p>No projects found.</p>";
+            return;
+        }
+
         data.forEach(repo => {
-            if (!repo.fork) {  // 不显示fork项目
-                const div = document.createElement("div");
-                div.className = "repo";
+            const div = document.createElement("div");
+            div.className = "repo";
 
-                div.innerHTML = `
-                    <h3>${repo.name}</h3>
-                    <p>${repo.description || "No description provided."}</p>
-                    <a href="${repo.html_url}" target="_blank">View on GitHub</a>
-                `;
+            div.innerHTML = `
+                <h3>${repo.name}</h3>
+                <p>${repo.description || "No description provided."}</p>
+                <p>⭐ ${repo.stargazers_count} | ${repo.language || "Unknown"}</p>
+                <a href="${repo.html_url}" target="_blank">View Project</a>
+            `;
 
-                repoList.appendChild(div);
-            }
+            repoList.appendChild(div);
         });
     })
-    .catch(error => console.error("Error:", error));
+    .catch(error => {
+        console.error(error);
+        document.getElementById("repo-list").innerHTML =
+            "<p>Failed to load projects. Please check username or API limit.</p>";
+    });
